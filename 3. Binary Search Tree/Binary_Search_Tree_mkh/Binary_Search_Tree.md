@@ -1,8 +1,62 @@
 # 1. Binary Search Tree
 
-이진트리 검색, 삽입, 삭제는 추가하겠습니다..
+# 2. insert, delete
 
-# 2. Binary Search Tree : Lowest Common Ancestor
+insert
+```java
+    // 중복된 데이터는 insert 되면 안되므로 else if 처리.
+    private static Node insert(Node t, int x) {
+        if(t == null) return new Node(x);
+        
+        if(t.data < x) t.right = insert(t.right, x);
+        else if (t.data > x) t.left = insert(t.left, x);
+
+        return t;
+    }
+```
+
+delete (delete 는 삭제하고자 하는 원소 노드를 treeSearch 를 통해 찾아서 제거해야 하지만 우선 delete 메소드만 기술)
+```java
+private static Node delete(Node t, Node r, Node p) {
+        if(t.data == r.data) {
+            t = deleteNode(t);
+        } else if(r.data == p.left.data) {
+            p.left = deleteNode(r);
+        } else {
+            p.right = deleteNode(r);
+        }
+
+        return t;
+    }
+
+    private static Node deleteNode(Node r) {
+        if(r.left == null && r.right == null) {
+            return null;
+        } else if(r.left == null && r.right != null) {
+            return r.right;
+        } else if(r.left != null && r.right == null) {
+            return r.left;
+        } else {
+            Node parent = null;
+            Node s = r.right;
+            while(s.left != null) {
+                parent = s;
+                s = s.left;
+            }
+
+            r.data = s.data;
+            if(r.right.data == s.data) {
+                r.right = s.right;
+            } else {
+                parent.left = s.right;
+            }
+
+            return r;
+        }
+    }
+```
+
+# 3. Binary Search Tree : Lowest Common Ancestor
 
 - [Hacker rank 문제](hackerrank.com/challenges/binary-search-tree-lowest-common-ancestor/problem)
 
